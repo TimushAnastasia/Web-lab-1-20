@@ -1,0 +1,66 @@
+<?php
+
+// Шлях до теки для зберігання файлів
+$upload_directory = 'texts/';
+
+// Функція для завантаження текстових файлів
+function upload_file($upload_directory) {
+    if ($_FILES['file']['error'] == UPLOAD_ERR_OK && is_uploaded_file($_FILES['file']['tmp_name'])) {
+        $uploaded_file = $upload_directory . basename($_FILES['file']['name']);
+        move_uploaded_file($_FILES['file']['tmp_name'], $uploaded_file);
+        return $uploaded_file;
+    }
+    return false;
+}
+
+// Функція для виведення змісту файлу
+function display_file_contents($file_path) {
+    if (file_exists($file_path)) {
+        $file_contents = file_get_contents($file_path);
+        return $file_contents;
+    }
+    return false;
+}
+
+// Перевірка, чи був надісланий файл
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $uploaded_file = upload_file($upload_directory);
+    if ($uploaded_file) {
+        echo "Файл успішно завантажено. Шлях до файлу: $uploaded_file";
+    } else {
+        echo "Помилка при завантаженні файлу.";
+    }
+}
+
+// Перевірка, чи був переданий параметр file_name
+if (isset($_GET['file_name'])) {
+    $requested_file = $_GET['file_name'];
+    $file_path = $upload_directory . $requested_file;
+    $file_contents = display_file_contents($file_path);
+    if ($file_contents) {
+        echo "<h2>Зміст файлу $requested_file:</h2>";
+        echo "<pre>$file_contents</pre>";
+    } else {
+        echo "Файл $requested_file не знайдено.";
+    }
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Завантаження файлу</title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<h1>Форма для завантаження текстових файлів</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    Виберіть файл для завантаження: <input type="file" name="file"><br>
+    <input type="submit" value="Завантажити">
+</form>
+
+</body>
+</html>

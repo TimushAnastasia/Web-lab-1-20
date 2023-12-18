@@ -1,0 +1,85 @@
+<?php
+
+// Створення двовимірного асоціативного масиву з описом товарів
+$products = array(
+    array("name" => "Продукт А", "price" => 100),
+    array("name" => "Продукт Б", "price" => 200),
+    array("name" => "Продукт В", "price" => 150),
+    array("name" => "Продукт Г", "price" => 300),
+    array("name" => "Продукт Д", "price" => 120)
+);
+
+// Функція для виведення товарів в алфавітному порядку
+function printProductsAlphabetically($products) {
+    // Сортування за назвою
+    usort($products, function($a, $b) {
+        return strcmp($a['name'], $b['name']);
+    });
+
+    // Виведення у вигляді таблиці
+    echo "<table border='1'>
+            <tr>
+                <th>Назва товару</th>
+                <th>Ціна</th>
+            </tr>";
+    
+    foreach($products as $product) {
+        echo "<tr>
+                <td>{$product['name']}</td>
+                <td>{$product['price']} грн</td>
+              </tr>";
+    }
+
+    echo "</table>";
+}
+
+// Функція для виведення товарів у зазначеному діапазоні цін
+function printProductsInRange($products, $minPrice, $maxPrice) {
+    // Виведення у вигляді таблиці
+    echo "<table border='1'>
+            <tr>
+                <th>Назва товару</th>
+                <th>Ціна</th>
+            </tr>";
+    
+    foreach($products as $product) {
+        if ($product['price'] >= $minPrice && $product['price'] <= $maxPrice) {
+            echo "<tr>
+                    <td>{$product['name']}</td>
+                    <td>{$product['price']} грн</td>
+                  </tr>";
+        }
+    }
+
+    echo "</table>";
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Магазин товарів</title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+    <h1>Товари магазину</h1>
+
+    <h2>Товари в алфавітному порядку</h2>
+    <?php printProductsAlphabetically($products); ?>
+
+    <h2>Товари у зазначеному діапазоні цін</h2>
+    <?php
+        // Перевірка, чи вказані параметри в адресному рядку
+        if(isset($_GET['minPrice']) && isset($_GET['maxPrice'])) {
+            $minPrice = $_GET['minPrice'];
+            $maxPrice = $_GET['maxPrice'];
+            printProductsInRange($products, $minPrice, $maxPrice);
+        } else {
+            echo "<p>Будь ласка, вкажіть діапазон цін через адресний рядок (наприклад, ?minPrice=100&maxPrice=200)</p>";
+        }
+    ?>
+
+</body>
+</html>

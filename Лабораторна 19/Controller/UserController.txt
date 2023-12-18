@@ -1,0 +1,21 @@
+<?php
+
+class UserController extends ModelController
+{
+    protected function getModel()
+    {
+        return User::class;
+    }
+
+    protected function getModelName()
+    {
+        return 'користувачів';
+    }
+
+    protected function getModelColumn()
+    {
+        return 'Ім\'я користувача';
+    }
+
+    // Додайте інші методи, які можуть бути специфічними для UserController
+}

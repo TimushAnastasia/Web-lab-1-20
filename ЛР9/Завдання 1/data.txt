@@ -1,0 +1,8 @@
+{
+  "data": [
+    {"label": "A", "value": 25},
+    {"label": "B", "value": 40},
+    {"label": "C", "value": 15},
+    {"label": "D", "value": 30}
+  ]
+}

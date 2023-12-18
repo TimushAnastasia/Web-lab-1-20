@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login Form</h1>
+
+    <?php
+    // Підключаємо файли з логінами та паролями
+    require_once('users.php');
+    require_once('passwords.php');
+
+    // Перевіряємо, чи були передані дані форми
+    if(isset($_POST['username']) && isset($_POST['password'])) {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        // Перевіряємо чи існують такий логін та пароль в масивах
+        if(array_key_exists($username, $users) && $password == $passwords[$username]) {
+            echo "<p>Welcome, " . $users[$username] . "!</p>";
+        } else {
+            echo "<p>Invalid login or password.</p>";
+        }
+    }
+    ?>
+
+    <form method="post" action="">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

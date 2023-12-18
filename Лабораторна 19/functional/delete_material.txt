@@ -1,0 +1,28 @@
+<?php
+include('../models/User.php');
+
+session_start();
+
+// Перевірка авторизації
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Отримання ID матеріалу з параметра запиту
+if (isset($_GET['id'])) {
+    $material_id = $_GET['id'];
+
+    $user = User::find($_SESSION['user_id']);
+
+    // Перевірка, чи користувач має право видаляти матеріали
+    if ($user && $user->deleteMaterial($material_id)) {
+        header("Location: index.php");
+        exit();
+    }
+}
+
+header("Location: index.php");
+exit();
+}
+?>

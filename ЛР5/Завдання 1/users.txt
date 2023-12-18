@@ -1,0 +1,7 @@
+<?php
+$users = [
+    "user1" => "John Doe",
+    "user2" => "Jane Doe",
+    "user3" => "Bob Smith"
+];
+?>

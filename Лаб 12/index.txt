@@ -1,0 +1,67 @@
+<?php
+include('config.php');
+include('build_catalog.php');
+
+session_start();
+
+// Перевірка авторизації
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_material'])) {
+    $material_name = $_POST['material_name'];
+    $manufacturer = $_POST['manufacturer'];
+    $year = $_POST['year'];
+
+    $query = "INSERT INTO materials (material_name, manufacturer, year) VALUES (?, ?, ?)";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$material_name, $manufacturer, $year]);
+}
+
+// Запит для вибірки матеріалів
+$query = "SELECT * FROM materials";
+$results = $pdo->query($query);
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Building Materials Catalog</title>
+</head>
+<body>
+    <!-- Таблиця каталогу матеріалів -->
+    <h1>Building Materials Catalog</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name of the material</th>
+            <th>Producer</th>
+            <th>Issue number</th>
+        </tr>
+        <?php while ($row = $results->fetch(PDO::FETCH_ASSOC)) { ?>
+            <tr>
+                <td><?php echo $row['id']; ?></td>
+                <td><?php echo $row['material_name']; ?></td>
+                <td><?php echo $row['manufacturer']; ?></td>
+                <td><?php echo $row['year']; ?></td>
+            </tr>
+        <?php } ?>
+    </table>
+
+    <!-- Форма для додавання матеріалів -->
+    <h2>Add a new building material</h2>
+    <form method="post">
+        Name of the material: <input type="text" name="material_name" required><br>
+        Producer: <input type="text" name="manufacturer" required><br>
+        Graduation year: <input type="text" name="year" required><br>
+        <input type="submit" name="save_material" value="Save">
+    </form>
+
+    <!-- Форма для виходу з акаунту -->
+    <form method="post" action="logout.php">
+        <input type="submit" value="Logout">
+    </form>
+</body>
+</html>

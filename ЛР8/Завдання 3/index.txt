@@ -1,0 +1,18 @@
+<?php
+// Отримати вміст файлу XML
+$xmlData = file_get_contents('book.xml');
+
+// Перетворити XML у масив PHP
+$xmlArray = simplexml_load_string($xmlData);
+
+// Перетворити масив XML в асоціативний масив PHP
+$bookArray = json_decode(json_encode($xmlArray), true);
+
+// Перетворити асоціативний масив у JSON
+$jsonString = json_encode($bookArray, JSON_PRETTY_PRINT);
+
+// Зберегти JSON у файл
+file_put_contents('book.json', $jsonString);
+
+echo 'XML успішно конвертовано в JSON та збережено у файлі book.json.';
+?>

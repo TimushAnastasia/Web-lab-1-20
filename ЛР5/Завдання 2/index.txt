@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback Form</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h1>Feedback Form</h1>
+
+    <?php
+    // Функція для перевірки правильності email
+    function isValidEmail($email) {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+
+    // Функція для виведення помилки
+    function showError($message) {
+        echo "<p style='color: red;'>Error: $message</p>";
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $name = $_POST["name"];
+        $email = $_POST["email"];
+        $message = $_POST["message"];
+
+        // Перевірка чи введено ім'я
+        if (empty($name)) {
+            showError("Name is required");
+        }
+
+        // Перевірка правильності введення email
+        elseif (!isValidEmail($email)) {
+            showError("Invalid email address");
+        }
+
+        // Перевірка чи введено повідомлення
+        elseif (empty($message)) {
+            showError("Message is required");
+        } else {
+            // Виведення даних з форми
+            echo "<p>Name: $name</p>";
+            echo "<p>Email: $email</p>";
+            echo "<p>Message: $message</p>";
+
+            // Обробка завантаженого файлу
+            if ($_FILES["file"]["error"] == UPLOAD_ERR_OK) {
+                $fileName = $_FILES["file"]["name"];
+                $fileSize = $_FILES["file"]["size"];
+                $fileType = $_FILES["file"]["type"];
+                $fileTmpName = $_FILES["file"]["tmp_name"];
+
+                echo "<p>File Name: $fileName</p>";
+                echo "<p>File Size: $fileSize bytes</p>";
+                echo "<p>File Type: $fileType</p>";
+
+                // Збереження файлу (можна зберегти у вказану директорію)
+                // move_uploaded_file($fileTmpName, "uploads/$fileName");
+            }
+        }
+    }
+    ?>
+
+    <form method="post" action="<?php echo $_SERVER["PHP_SELF"]; ?>" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email"><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="5" cols="40"></textarea><br><br>
+
+        <label for="file">Upload File:</label>
+        <input type="file" id="file" name="file"><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

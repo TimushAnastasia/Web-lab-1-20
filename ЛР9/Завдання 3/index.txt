@@ -1,0 +1,47 @@
+bash
+pip install Pillow
+
+
+python
+from PIL import Image, ImageDraw, ImageFont
+import os
+import datetime
+
+def add_signature_to_image(image_path):
+    # Перевірка, чи існує файл
+    if not os.path.exists(image_path):
+        print("Файл не знайдено.")
+        return
+
+    # Завантаження зображення
+    img = Image.open(image_path)
+    
+    # Додавання підпису
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.load_default()
+
+    signature = "451, Тімуш Анастасія Віталіївна, " + datetime.datetime.now().strftime('%Y-%m-%d')
+    text_width, text_height = draw.textsize(signature, font=font)
+    draw.text((10, 10), signature, fill='black', font=font)
+
+    # Збереження зміненого зображення
+    modified_image_path = 'modified_' + os.path.basename(image_path)
+    img.save(modified_image_path)
+
+    return modified_image_path
+
+# Функція для відвантаження зміненого зображення користувачеві
+def download_image(image_path):
+    try:
+        from google.colab import files
+        files.download(image_path)
+    except ImportError:
+        print("Функція завантаження не може бути виконана поза середовищем Google Colab.")
+
+# Приклад використання:
+input_image_path = 'шлях_до_зображення.png'  # Замініть це на реальний шлях до зображення
+modified_image = add_signature_to_image(input_image_path)
+
+if modified_image:
+    print("Зображення з підписом створено: ", modified_image)
+    download_image(modified_image)

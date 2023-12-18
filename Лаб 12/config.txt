@@ -1,0 +1,52 @@
+<?php
+// Налаштування БД
+$database_host = 'localhost';
+$database_username = 'root';
+$database_password = '';
+$database_name = 'build_materials';
+
+// Відкриваємо нове з'єднання з MySQL сервером
+try {
+    $pdo = new PDO("mysql:host=$database_host;dbname=$database_name;charset=utf8", $database_username, $database_password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die('Error: Unable to connect to the database. ' . $e->getMessage());
+}
+
+
+
+// Створення таблиці materials, якщо вона не існує
+$createTableQuery = "
+    CREATE TABLE IF NOT EXISTS materials (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        material_name VARCHAR(255) NOT NULL,
+        manufacturer VARCHAR(255) NOT NULL,
+        year INT NOT NULL
+    )
+";
+
+try {
+    $pdo->query($createTableQuery);
+} catch (PDOException $e) {
+    die('Error: Unable to create materials table. ' . $e->getMessage());
+}
+
+// Створення таблиці users, якщо вона не існує
+$createUsersTableQuery = "
+    CREATE TABLE IF NOT EXISTS users (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        fullname VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL
+    )
+";
+
+try {
+    $pdo->query($createUsersTableQuery);
+} catch (PDOException $e) {
+    die('Error: Unable to create users table. ' . $e->getMessage());
+}
+
+// Решта коду, якщо потрібно
+?>

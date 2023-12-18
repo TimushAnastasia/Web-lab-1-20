@@ -1,0 +1,57 @@
+<?php
+include('config.php');
+
+session_start();
+
+// Перевірка авторизації
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_material'])) {
+    $material_id = $_POST['material_id'];
+    $material_name = $_POST['material_name'];
+    $manufacturer = $_POST['manufacturer'];
+    $year = $_POST['year'];
+
+    $query = "UPDATE materials SET material_name = ?, manufacturer = ?, year = ? WHERE id = ?";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$material_name, $manufacturer, $year, $material_id]);
+}
+
+// Отримання ID матеріалу з параметра запиту
+if (isset($_GET['id'])) {
+    $material_id = $_GET['id'];
+
+    // Запит для отримання інформації про матеріал за ID
+    $query = "SELECT * FROM materials WHERE id = ?";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$material_id]);
+    $material = $statement->fetch(PDO::FETCH_ASSOC);
+} else {
+    header("Location: index.php");
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Material</title>
+</head>
+<body>
+    <h1>Edit Material</h1>
+    <!-- Форма для редагування матеріалу -->
+    <form method="post">
+        <input type="hidden" name="material_id" value="<?php echo $material['id']; ?>">
+        Name of the material: <input type="text" name="material_name" value="<?php echo $material['material_name']; ?>" required><br>
+        Producer: <input type="text" name="manufacturer" value="<?php echo $material['manufacturer']; ?>" required><br>
+        Graduation year: <input type="text" name="year" value="<?php echo $material['year']; ?>" required><br>
+        <input type="submit" name="update_material" value="Update">
+    </form>
+
+    <!-- Посилання на головну сторінку -->
+    <p><a href="index.php">Back to Catalog</a></p>
+</body>
+</html>

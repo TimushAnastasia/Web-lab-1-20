@@ -1,0 +1,21 @@
+<?php
+
+class GroupController extends ModelController
+{
+    protected function getModel()
+    {
+        return Group::class;
+    }
+
+    protected function getModelName()
+    {
+        return 'груп';
+    }
+
+    protected function getModelColumn()
+    {
+        return 'Група';
+    }
+
+    // Додайте інші методи, які можуть бути специфічними для GroupController
+}

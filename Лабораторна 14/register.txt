@@ -1,0 +1,40 @@
+<?php
+include('config.php');
+include('User.php');
+
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
+    $username = $_POST['username'];
+    $fullname = $_POST['fullname'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    $query = "INSERT INTO users (username, fullname, email, password) VALUES (?, ?, ?, ?)";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$username, $fullname, $email, $password]);
+
+    $_SESSION['user_id'] = $pdo->lastInsertId();
+    header("Location: login.php");
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <h1>Register</h1>
+    <form method="post">
+        Username: <input type="text" name="username" required><br>
+        Fullname: <input type="text" name="fullname" required><br>
+        Email: <input type="text" name="email" required><br>
+        Password: <input type="password" name="password" required><br>
+        <input type="submit" name="register" value="Register">
+    </form>
+
+    <p>Already have an account? <a href="login.php">Login</a></p>
+</body>
+</html>

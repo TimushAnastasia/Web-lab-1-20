@@ -1,0 +1,7 @@
+<?php
+include('../core/config.php');
+include('../models/Material.php');
+
+$query = "SELECT * FROM materials";
+$results = $pdo->query($query);
+?>

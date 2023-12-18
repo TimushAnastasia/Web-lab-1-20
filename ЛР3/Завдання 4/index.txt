@@ -1,0 +1,43 @@
+<?php
+function printArrayTable($array) {
+    echo "<table border='1'>";
+    echo "<tr>";
+    foreach ($array[0] as $key => $value) {
+        echo "<th>$key</th>";
+    }
+    echo "</tr>";
+    foreach ($array as $row) {
+        echo "<tr>";
+        foreach ($row as $value) {
+            echo "<td>$value</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</table>";
+}
+
+$arNumbers = array(1,2,3,4,5,6,7,8,9);
+$data = [
+    ["col 1", "col 2", "col 3"],
+    [$arNumbers[0], $arNumbers[1], $arNumbers[2]],
+    [$arNumbers[3], $arNumbers[4], $arNumbers[5]],
+    [$arNumbers[6], $arNumbers[7], $arNumbers[8]]
+];
+?>
+
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Test</title>
+  <meta charset="utf-8">
+ </head>
+ <body>
+  <h1>Тестова сторінка. ЛР3</h1>
+  <?php
+    printArrayTable($data);
+  ?>
+  <time>
+   <?=date("Y-m-d H:i:s")?>
+  </time>
+ </body>
+</html>

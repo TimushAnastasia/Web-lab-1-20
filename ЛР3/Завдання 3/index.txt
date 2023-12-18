@@ -1,0 +1,30 @@
+<?php
+function getCurrentClass($currentTime) {
+    $classTimes = [
+        ["start" => "09:00", "end" => "10:00"],
+        ["start" => "10:10", "end" => "11:10"],
+        ["start" => "11:40", "end" => "12:40"],
+        ["start" => "12:50", "end" => "13:50"]
+    ];
+
+    foreach ($classTimes as $index => $times) {
+        $startTime = strtotime($times["start"]);
+        $endTime = strtotime($times["end"]);
+
+        if ($currentTime >= $startTime && $currentTime <= $endTime) {
+            return $index + 1;
+        }
+    }
+
+    return "Немає пари";
+}
+
+$currentTime = date("H:i");
+
+$currentClass = getCurrentClass($currentTime);
+
+echo "Поточний час: $currentTime<br>";
+echo "Номер поточної пари: $currentClass";
+?>
+<a href="сторінка1.html">Завдання1</a>
+<a href="сторінка2.html">Завдання2</a>

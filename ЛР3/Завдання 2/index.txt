@@ -1,0 +1,34 @@
+<?php
+function getUkrainianDay($day) {
+    switch ($day) {
+        case 1:
+            return "Понеділок";
+        case 2:
+            return "Вівторок";
+        case 3:
+            return "Середа";
+        case 4:
+            return "Четвер";
+        case 5:
+            return "П'ятниця";
+        case 6:
+            return "Субота";
+        case 7:
+            return "Неділя";
+        default:
+            return "Невідомий день";
+    }
+}
+
+$currentDate = date("Y-m-d");
+$currentTime = date("H:i:s");
+$currentDayOfWeek = date("N");
+
+$ukrainianDayOfWeek = getUkrainianDay($currentDayOfWeek);
+
+echo "Поточна дата: $currentDate<br>";
+echo "Поточний час: $currentTime<br>";
+echo "День тижня: $ukrainianDayOfWeek";
+?>
+<a href="сторінка1.html">Завдання1</a>
+<a href="сторінка2.html">Завдання3</a>

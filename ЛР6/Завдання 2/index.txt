@@ -1,0 +1,44 @@
+<?php
+
+// Ініціалізуємо змінну для підрахунку кількості відвідувань
+$visits = 0;
+
+// Якщо відповідні дані передавалися через cookie, зберігаємо їх в цю змінну
+if (isset($_COOKIE['visits'])) {
+    $visits = $_COOKIE['visits'];
+}
+
+// Нарощуємо лічильник відвідувань
+$visits++;
+
+// Ініціалізуємо змінну для зберігання значення останнього відвідування сторінки
+$lastVisit = '';
+
+// Якщо відповідні дані передавалися через cookie, відфільтруємо їх і збережемо в цю змінну
+if (isset($_COOKIE['lastVisit'])) {
+    $lastVisit = filter_var($_COOKIE['lastVisit'], FILTER_SANITIZE_STRING);
+}
+
+// Встановлюємо відповідні куки (для лічильника і для дати)
+setcookie('visits', $visits, time() + (86400 * 30), "/");
+setcookie('lastVisit', date('d/m/Y H:i:s'), time() + (86400 * 30), "/");
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cookie Example</title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<h1>Ласкаво просимо!</h1>
+
+<?php if ($visits > 1) : ?>
+    <p>Ви зайшли на сторінку <?php echo $visits; ?> разів</p>
+    <p>Останнє відвідування: <?php echo $lastVisit; ?></p>
+<?php endif; ?>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+import json
+import matplotlib.pyplot as plt
+
+def create_bar_chart(file_path, output_width=8, output_height=6):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+
+    labels = [item['label'] for item in data['data']]
+    values = [item['value'] for item in data['data']]
+
+    plt.figure(figsize=(output_width, output_height))
+    plt.bar(labels, values)
+    plt.xlabel('Labels')
+    plt.ylabel('Values')
+    plt.title('Bar Chart')
+
+    # Додавання підпису
+    signature = "451, Тімуш Анастасія Віталіївна, дата"
+    plt.text(0.5, -0.2, signature, horizontalalignment='center', verticalalignment='center', transform=plt.gca().transAxes)
+
+    plt.show()
+
+# Виклик функції з параметрами розмірів зображення
+create_bar_chart('data.json', output_width=10, output_height=8)

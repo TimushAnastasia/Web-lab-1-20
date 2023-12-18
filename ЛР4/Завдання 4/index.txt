@@ -1,0 +1,88 @@
+<?php
+
+// Функція для створення та заповнення двовимірної матриці
+function createMatrix($rows, $cols) {
+    $matrix = array();
+    for ($i = 0; $i < $rows; $i++) {
+        $matrix[$i] = array();
+        for ($j = 0; $j < $cols; $j++) {
+            $matrix[$i][$j] = rand(0, 100);
+        }
+    }
+    return $matrix;
+}
+
+// Функція для додавання двох матриць
+function addMatrices($matrix1, $matrix2) {
+    $result = array();
+    $rows = count($matrix1);
+    $cols = count($matrix1[0]);
+
+    for ($i = 0; $i < $rows; $i++) {
+        for ($j = 0; $j < $cols; $j++) {
+            $result[$i][$j] = $matrix1[$i][$j] + $matrix2[$i][$j];
+        }
+    }
+
+    return $result;
+}
+
+// Функція для віднімання двох матриць
+function subtractMatrices($matrix1, $matrix2) {
+    $result = array();
+    $rows = count($matrix1);
+    $cols = count($matrix1[0]);
+
+    for ($i = 0; $i < $rows; $i++) {
+        for ($j = 0; $j < $cols; $j++) {
+            $result[$i][$j] = $matrix1[$i][$j] - $matrix2[$i][$j];
+        }
+    }
+
+    return $result;
+}
+
+// Створення та заповнення двовимірних матриць
+$matrixA = createMatrix(10, 10);
+$matrixB = createMatrix(10, 10);
+
+// Додавання та віднімання матриць
+$sumMatrix = addMatrices($matrixA, $matrixB);
+$diffMatrix = subtractMatrices($matrixA, $matrixB);
+
+// Функція для виведення матриці в табличній формі
+function printMatrix($matrix) {
+    echo "<table border='1'>";
+    foreach ($matrix as $row) {
+        echo "<tr>";
+        foreach ($row as $element) {
+            echo "<td>$element</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</table>";
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Матриці</title>
+</head>
+<body>
+    <h1>Початкові матриці</h1>
+    <h2>Матриця A</h2>
+    <?php printMatrix($matrixA); ?>
+    <h2>Матриця B</h2>
+    <?php printMatrix($matrixB); ?>
+
+    <h1>Результат додавання та віднімання</h1>
+    <h2>Сума матриць (A + B)</h2>
+    <?php printMatrix($sumMatrix); ?>
+    <h2>Різниця матриць (A - B)</h2>
+    <?php printMatrix($diffMatrix); ?>
+</body>
+</html>

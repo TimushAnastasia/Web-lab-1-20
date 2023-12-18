@@ -1,0 +1,30 @@
+<?php
+include('core/config.php');
+include('models/Material.php');
+include('core/Router.php');
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: functional/login.php");
+    exit();
+}
+
+// Створення об'єкта Router
+$router = new Router();
+
+// Додавання маршрутів
+$router->addRoute('GET', '/groups', ['GroupController', $pdo, 'index']);
+$router->addRoute('GET', '/groups/{id}', ['GroupController', $pdo, 'show']);
+$router->addRoute('GET', '/groups/edit/{id}', ['GroupController', $pdo, 'edit']);
+$router->addRoute('POST', '/groups/update/{id}', ['GroupController', $pdo, 'update']);
+$router->addRoute('POST', '/groups/delete/{id}', ['GroupController', $pdo, 'delete']);
+$router->addRoute('GET', '/groups/create', ['GroupController', $pdo, 'create']);
+$router->addRoute('POST', '/groups/store', ['GroupController', $pdo, 'store']);
+
+$router->addRoute('GET', '/users', ['UserController', $pdo, 'index']);
+$router->addRoute('GET', '/users/{id}', ['UserController', $pdo, 'show']);
+
+// Обробка запиту за допомогою Router
+$router->handleRequest();
+?>

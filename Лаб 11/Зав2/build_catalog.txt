@@ -1,0 +1,32 @@
+<?php
+include('config.php');
+
+$query = "SELECT * FROM materials";
+$results = $mysqli->query($query);
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Catalog of building materials</title>
+</head>
+<body>
+    <h1>Catalog of building materials</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name of the material</th>
+            <th>Producer</th>
+            <th>issue number</th>
+        </tr>
+        <?php while ($row = $results->fetch_assoc()) { ?>
+            <tr>
+                <td><?php echo $row['id']; ?></td>
+                <td><?php echo $row['material_name']; ?></td>
+                <td><?php echo $row['manufacturer']; ?></td>
+                <td><?php echo $row['year']; ?></td>
+            </tr>
+        <?php } ?>
+    </table>
+</body>
+</html>

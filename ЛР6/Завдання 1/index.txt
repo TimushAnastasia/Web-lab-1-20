@@ -1,0 +1,53 @@
+<?php
+// Перевіряємо, чи було відправлено форму зі значенням імені
+if (isset($_POST['name'])) {
+    $name = $_POST['name'];
+
+    // Встановлюємо cookie з іменем
+    setcookie('name', $name, time() + (86400 * 30), "/"); // Зберігаємо на 30 днів
+
+    // Оновлюємо сторінку, щоб відобразити нове значення cookie
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+// Якщо cookie з іменем вже встановлено, виводимо його значення
+if (isset($_COOKIE['name'])) {
+    $name = $_COOKIE['name'];
+} else {
+    $name = "Гість";
+}
+
+// Лічильник відвідувань
+$counter = 0;
+
+// Перевіряємо, чи вже є cookie для лічильника
+if (isset($_COOKIE['counter'])) {
+    $counter = $_COOKIE['counter'];
+}
+
+// Збільшуємо лічильник
+$counter++;
+
+// Встановлюємо нове значення cookie для лічильника
+setcookie('counter', $counter, time() + (86400 * 30), "/");
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cookie Example</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h1>Вітаємо, <?php echo $name; ?></h1>
+    <form method="post">
+        <label for="name">Введіть ваше ім'я:</label>
+        <input type="text" id="name" name="name">
+        <input type="submit" value="Відправити">
+    </form>
+
+    <h2>Кількість відвідувань: <?php echo $counter; ?></h2>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?php
+class User extends Model
+{
+    // інші методи...
+
+    public function deleteMaterial($materialId)
+    {
+        // Перевірка, чи користувач має право видаляти матеріали
+        // Це залежить від вашого бізнес-логіки та прав доступу
+
+        $material = Material::find($materialId);
+
+        if ($material) {
+            return $material->delete();
+        }
+
+        return false;
+    }
+}
+?>

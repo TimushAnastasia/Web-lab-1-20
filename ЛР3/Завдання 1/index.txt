@@ -1,0 +1,35 @@
+<?php
+$lastName = "Тімуш";
+$firstName = "Анастасія";
+$birthdate = "24.08.2005";
+?>
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя Інформація</title>
+</head>
+<body>
+
+<!-- Виведення інформації за допомогою echo -->
+<div>
+    <?php
+    echo "<p>Прізвище: $lastName</p>";
+    echo "<p>Ім'я: $firstName</p>";
+    echo "<p>Дата народження: $birthdate</p>";
+    ?>
+</div>
+
+<!-- Виведення інформації за допомогою конструкції <?= ?> -->
+<div>
+    <p>Прізвище: <?= $lastName ?></p>
+    <p>Ім'я: <?= $firstName ?></p>
+    <p>Дата народження: <?= $birthdate ?></p>
+</div>
+<a href="сторінка1.html">Завдання2</a>
+<a href="сторінка2.html">Завдання3</a>
+
+</body>
+</html>

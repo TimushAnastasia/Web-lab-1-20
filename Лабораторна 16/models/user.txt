@@ -1,0 +1,9 @@
+<?php
+class User extends Model
+{
+    protected static function createInstance(PDO $pdo, $table)
+    {
+        return new static($pdo, $table);
+    }
+}
+?>

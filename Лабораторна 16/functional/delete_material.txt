@@ -1,0 +1,27 @@
+<?php
+include('../core/config.php');
+
+session_start();
+
+// Перевірка авторизації
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Отримання ID матеріалу з параметра запиту
+if (isset($_GET['id'])) {
+    $material_id = $_GET['id'];
+
+    // Запит для видалення матеріалу за ID
+    $query = "DELETE FROM materials WHERE id = ?";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$material_id]);
+
+    header("Location: index.php");
+    exit();
+} else {
+    header("Location: index.php");
+    exit();
+}
+?>

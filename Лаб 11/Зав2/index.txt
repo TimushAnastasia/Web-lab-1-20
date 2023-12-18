@@ -1,0 +1,33 @@
+Каталог бази будівельних матеріалів
+
+<?php
+include('config.php');
+include('build_catalog.php');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $material_name = $_POST['material_name'];
+    $manufacturer = $_POST['manufacturer'];
+    $year = $_POST['year'];
+
+    $query = "INSERT INTO materials (material_name, manufacturer, year) VALUES (?, ?, ?)";
+    $statement = $mysqli->prepare($query);
+    $statement->bind_param('sss', $material_name, $manufacturer, $year);
+    $statement->execute();
+    $statement->close();
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add material</title>
+</head>
+<body>
+    <h1>Add a new building material</h1>
+    <form method="post">
+        Name of the material: <input type="text" name="material_name"><br>
+        Producer: <input type="text" name="manufacturer"><br>
+        Graduation year: <input type="text" name="year"><br>
+        <input type="submit" value="save">
+    </form>
+</body>
+</html>

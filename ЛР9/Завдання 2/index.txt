@@ -1,0 +1,40 @@
+import json
+
+def create_svg_bar_chart(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+
+    labels = [item['label'] for item in data['data']]
+    values = [item['value'] for item in data['data']]
+
+    max_value = max(values)
+    scale = 100 / max_value  # Scale factor for bar height
+
+    bar_width = 40  # Width of each bar
+    spacing = 10  # Spacing between bars
+
+    svg_width = (bar_width + spacing) * len(labels)  # Calculate total SVG width
+    svg_height = 120  # Set SVG height
+
+    svg = f'<svg width="{svg_width}" height="{svg_height}" xmlns="http://www.w3.org/2000/svg">'
+
+    for i, value in enumerate(values):
+        bar_height = value * scale  # Height of the bar based on the scale factor
+        x = i * (bar_width + spacing)
+        y = svg_height - bar_height
+
+        svg += f'<rect x="{x}" y="{y}" width="{bar_width}" height="{bar_height}" fill="blue"/>'
+        svg += f'<text x="{x + bar_width / 2}" y="{svg_height}" fill="black" font-size="14" text-anchor="middle">{labels[i]}</text>'
+        svg += f'<text x="{x + bar_width / 2}" y="{y - 5}" fill="black" font-size="12" text-anchor="middle">{value}</text>'
+
+    # Додавання підпису
+    signature = "451, Тімуш Анастасія Віталіївна, дата"
+    svg += f'<text x="50%" y="{svg_height + 20}" fill="black" font-size="14" text-anchor="middle">{signature}</text>'
+
+    svg += '</svg>'
+
+    with open('bar_chart.svg', 'w') as svg_file:
+        svg_file.write(svg)
+
+# Виклик функції
+create_svg_bar_chart('data.json')

@@ -1,0 +1,89 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'];
+    $author = $_POST['author'];
+    $genre = $_POST['genre'];
+    $price = $_POST['price'];
+    $publish_date = $_POST['publish_date'];
+    $description = $_POST['description'];
+
+    $xml = simplexml_load_file('book.xml');
+
+    $newBook = $xml->addChild('book');
+    $newBook->addChild('title', $title);
+    $newBook->addChild('author', $author);
+    $newBook->addChild('genre', $genre);
+    $newBook->addChild('price', $price);
+    $newBook->addChild('publish_date', $publish_date);
+    $newBook->addChild('description', $description);
+
+    $xml->asXML('book.xml');
+}
+
+$xml = simplexml_load_file('book.xml');
+
+$title = $xml->title;
+$author = $xml->author;
+$genre = $xml->genre;
+$price = $xml->price;
+$publish_date = $xml->publish_date;
+$description = $xml->description;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details</title>
+</head>
+<body>
+
+<h1>Book Details</h1>
+
+<table border="1">
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>Price</th>
+        <th>Publish Date</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><?php echo $title; ?></td>
+        <td><?php echo $author; ?></td>
+        <td><?php echo $genre; ?></td>
+        <td><?php echo $price; ?></td>
+        <td><?php echo $publish_date; ?></td>
+        <td><?php echo $description; ?></td>
+        <td><a href="edit_book.php?index=<?php echo $index; ?>">Редагувати</a></td>
+    </tr>
+</table>
+
+<h2>Add a New Book</h2>
+
+<form action="" method="post">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required><br><br>
+
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author" required><br><br>
+
+    <label for="genre">Genre:</label>
+    <input type="text" id="genre" name="genre" required><br><br>
+
+    <label for="price">Price:</label>
+    <input type="text" id="price" name="price" required><br><br>
+
+    <label for="publish_date">Publish Date:</label>
+    <input type="date" id="publish_date" name="publish_date" required><br><br>
+
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+    <input type="submit" value="Add Book">
+</form>
+
+</body>
+</html>

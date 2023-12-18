@@ -1,0 +1,49 @@
+<?php
+include('core/config.php');
+include('models/Material.php');
+include('controllers/GroupController.php');
+include('controllers/UserController.php');
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: functional/login.php");
+    exit();
+}
+
+$action = isset($_GET['action']) ? $_GET['action'] : 'groups';
+$subaction = isset($_GET['subaction']) ? $_GET['subaction'] : '';
+
+$pdo = $pdo; // Ваш об'єкт PDO з config.php
+
+// Задайте шлях до папки з контролерами
+$controllersPath = __DIR__ . '/controllers/';
+
+switch ($action) {
+    case 'groups':
+        include($controllersPath . 'GroupController.php');
+        $controller = new GroupController($pdo);
+        break;
+    case 'users':
+        include($controllersPath . 'UserController.php');
+        $controller = new UserController($pdo);
+        break;
+    default:
+        echo "Контролер не знайдено";
+        exit();
+}
+
+if (!empty($controller)) {
+    if (method_exists($controller, $action)) {
+        if ($subaction) {
+            $controller->$action($subaction);
+        } else {
+            $controller->$action();
+        }
+    } else {
+        echo "Метод не знайдено";
+    }
+} else {
+    echo "Контролер не знайдено";
+}
+?>

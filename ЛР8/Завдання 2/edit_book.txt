@@ -1,0 +1,70 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Отримайте дані з форми
+    $title = $_POST['title'];
+    $author = $_POST['author'];
+    $genre = $_POST['genre'];
+    $price = $_POST['price'];
+    $publish_date = $_POST['publish_date'];
+    $description = $_POST['description'];
+
+    // Отримайте поточний запис з файлу
+    $xml = simplexml_load_file('book.xml');
+    $index = $_GET['index'];
+    $book = $xml->book[$index];
+
+    // Внесіть зміни у запис
+    $book->title = $title;
+    $book->author = $author;
+    $book->genre = $genre;
+    $book->price = $price;
+    $book->publish_date = $publish_date;
+    $book->description = $description;
+
+    // Збережіть зміни у файл
+    $xml->asXML('book.xml');
+
+    // Перенаправте користувача назад на головну сторінку
+    header('Location: index.php');
+    exit;
+}
+
+// Отримайте індекс запису для редагування
+$index = $_GET['index'];
+
+// Отримайте поточний запис з файлу
+$xml = simplexml_load_file('book.xml');
+$book = $xml->book[$index];
+
+// Отримайте дані для заповнення форми
+$title = $book->title;
+$author = $book->author;
+$genre = $book->genre;
+$price = $book->price;
+$publish_date = $book->publish_date;
+$description = $book->description;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book</title>
+</head>
+<body>
+
+<h1>Edit Book</h1>
+
+<form action="" method="post">
+    <!-- Поля форми з поточними значеннями -->
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" value="<?php echo $title; ?>" required><br><br>
+
+    <!-- ... Додайте інші поля форми ... -->
+
+    <input type="submit" value="Зберегти зміни">
+</form>
+
+</body>
+</html>

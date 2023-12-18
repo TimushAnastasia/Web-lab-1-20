@@ -1,0 +1,54 @@
+<?php
+class Router
+{
+    private $routes = [];
+
+    public function addRoute($method, $path, $handler)
+    {
+        $this->routes[] = [
+            'method' => $method,
+            'path' => $path,
+            'handler' => $handler,
+        ];
+    }
+
+    public function match($method, $uri)
+    {
+        foreach ($this->routes as $route) {
+            $pattern = str_replace('/', '\/', $route['path']);
+            $pattern = preg_replace('/\{(\w+)\}/', '(?<$1>[^\/]+)', $pattern);
+            $pattern = '/^' . $pattern . '$/';
+
+            if ($route['method'] === $method && preg_match($pattern, $uri, $matches)) {
+                $route['params'] = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+                return $route;
+            }
+        }
+
+        return null;
+    }
+
+    public function handleRequest()
+    {
+        $method = $_SERVER['REQUEST_METHOD'];
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        $route = $this->match($method, $uri);
+
+        if ($route) {
+            if (is_callable($route['handler'])) {
+                call_user_func_array($route['handler'], $route['params'] ?? []);
+            } else {
+                $class = $route['handler'][0];
+                $pdo = $route['handler'][1];
+                $method = $route['handler'][2];
+                $classInstance = new $class($pdo);
+                call_user_func_array([$classInstance, $method], $route['params'] ?? []);
+            }
+        } else {
+            header("HTTP/1.0 404 Not Found");
+            echo '404 Not Found';
+        }
+    }
+}
+?>

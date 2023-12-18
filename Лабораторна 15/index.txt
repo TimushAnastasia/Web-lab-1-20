@@ -1,0 +1,71 @@
+<?php
+include('config.php');
+include('Material.php');
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_material'])) {
+    $material_name = $_POST['material_name'];
+    $manufacturer = $_POST['manufacturer'];
+    $year = $_POST['year'];
+
+    $data = [
+        'material_name' => $material_name,
+        'manufacturer' => $manufacturer,
+        'year' => $year,
+    ];
+
+    Material::insert($data);
+}
+
+$materials = Material::all();
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Building Materials Catalog</title>
+</head>
+<body>
+    <h1>Building Materials Catalog</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name of the material</th>
+            <th>Producer</th>
+            <th>Issue number</th>
+            <th>Action</th>
+        </tr>
+        <?php foreach ($materials as $material) { ?>
+            <tr>
+                <td><?php echo $material->columns->id; ?></td>
+                <td><?php echo $material->columns->material_name; ?></td>
+                <td><?php echo $material->columns->manufacturer; ?></td>
+                <td><?php echo $material->columns->year; ?></td>
+                <td>
+                    <a href="edit_material.php?id=<?php echo $material->columns->id; ?>">Edit</a>
+                    |
+                    <a href="delete_material.php?id=<?php echo $material->columns->id; ?>">Delete</a>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>
+
+    <h2>Add a new building material</h2>
+    <form method="post">
+        Name of the material: <input type="text" name="material_name" required><br>
+        Producer: <input type="text" name="manufacturer" required><br>
+        Graduation year: <input type="text" name="year" required><br>
+        <input type="submit" name="save_material" value="Save">
+    </form>
+
+    <form method="post" action="logout.php">
+        <input type="submit" value="Logout">
+    </form>
+</body>
+</html>

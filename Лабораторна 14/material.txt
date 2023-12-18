@@ -1,0 +1,31 @@
+<?php
+class Material {
+    private $id;
+    private $material_name;
+    private $manufacturer;
+    private $year;
+
+    public function __construct($id, $material_name, $manufacturer, $year) {
+        $this->id = $id;
+        $this->material_name = $material_name;
+        $this->manufacturer = $manufacturer;
+        $this->year = $year;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getMaterialName() {
+        return $this->material_name;
+    }
+
+    public function getManufacturer() {
+        return $this->manufacturer;
+    }
+
+    public function getYear() {
+        return $this->year;
+    }
+}
+?>

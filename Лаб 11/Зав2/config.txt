@@ -1,0 +1,34 @@
+<?php
+// Налаштування БД
+$database_host = 'localhost';
+$database_username = 'root';
+$database_password = '';
+$database_name = 'build_materials'; 
+
+// Відкриваємо нове з'єднання з MySQL сервером
+$mysqli = new mysqli($database_host, $database_username, $database_password);
+
+// Виводимо помилку з'єднання
+if ($mysqli->connect_error) {
+    die('Error : (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
+}
+
+// Створення бази даних, якщо вона не існує
+$createDatabaseQuery = "CREATE DATABASE IF NOT EXISTS $database_name";
+$mysqli->query($createDatabaseQuery);
+
+// Вибір бази даних
+$mysqli->select_db($database_name);
+
+// Створення таблиці, якщо вона не існує
+$createTableQuery = "
+    CREATE TABLE IF NOT EXISTS materials (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        material_name VARCHAR(255) NOT NULL,
+        manufacturer VARCHAR(255) NOT NULL,
+        year INT NOT NULL
+    )
+";
+
+$mysqli->query($createTableQuery);
+?>

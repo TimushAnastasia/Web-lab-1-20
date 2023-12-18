@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book>
+  <title>Sample Book</title>
+  <author>John Doe</author>
+  <genre>Fiction</genre>
+  <price>19.99</price>
+  <publish_date>2023-10-31</publish_date>
+  <description>A sample book for testing purposes.</description>
+<book><title/><author/><genre/><price/><publish_date/><description/></book></book>

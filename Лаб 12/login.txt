@@ -1,0 +1,41 @@
+<?php
+include('config.php');
+
+session_start();
+
+// Вхід користувача
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+    $loginUsername = $_POST['login_username'];
+    $loginPassword = $_POST['login_password'];
+
+    $query = "SELECT * FROM users WHERE username = ?";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$loginUsername]);
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($loginPassword, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+    }
+
+   
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <!-- Форма входу -->
+    <form method="post">
+        Username: <input type="text" name="login_username" required><br>
+        Password: <input type="password" name="login_password" required><br>
+        <input type="submit" name="login" value="Login">
+    </form>
+
+    <!-- Посилання на сторінку реєстрації -->
+    <p>Don't have an account? <a href="register.php">Register</a></p>
+</body>
+</html>

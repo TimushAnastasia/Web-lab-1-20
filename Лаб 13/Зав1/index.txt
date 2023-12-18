@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Page Scraper</title>
+    
+    <!-- Підключення стилів -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h2 {
+            color: #0066cc;
+        }
+
+        .form-190 {
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 102, 204, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<?php
+include "WebPageScraper.php";
+
+// Використання класу для отримання та обробки сторінки
+$url = 'https://college.ks.ua';
+$scraper = new WebPageScraper($url);
+$scraper->loadPage();
+
+// Отримання та виведення елементів з класом "form-190"
+$sheduleClass = 'form-190';
+$sheduleElements = $scraper->findElementsByClass($sheduleClass);
+
+echo "<h2>Schedule for the Current Semester:</h2>";
+echo $scraper->getDOM()->saveHTML($sheduleElements[0]) . "\n";
+?>
+
+</body>
+</html>
